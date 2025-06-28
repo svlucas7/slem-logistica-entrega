@@ -96,17 +96,82 @@ int main() {
             case 2:
                 // CRUD Veículos
                 break;
-            case 3:
-                // CRUD Pedidos
+            case 3: {
+                int opPedido;
+                do {
+                    printf("\n--- Cadastro de Pedidos ---\n");
+                    printf("1. Adicionar Pedido\n");
+                    printf("2. Listar Pedidos\n");
+                    printf("3. Atualizar Pedido\n");
+                    printf("4. Remover Pedido\n");
+                    printf("0. Voltar\n");
+                    printf("Escolha uma opção: ");
+                    scanf("%d", &opPedido);
+                    getchar();
+                    if (opPedido == 1) {
+                        Pedido p;
+                        printf("ID do pedido: ");
+                        scanf("%d", &p.id);
+                        printf("Índice do local de origem: ");
+                        scanf("%d", &p.origem);
+                        printf("Índice do local de destino: ");
+                        scanf("%d", &p.destino);
+                        printf("Peso (kg): ");
+                        scanf("%f", &p.peso);
+                        if (adicionarPedido(&pedidos, p))
+                            printf("Pedido adicionado!\n");
+                        else
+                            printf("Pedido já existe!\n");
+                    } else if (opPedido == 2) {
+                        listarPedidos(&pedidos);
+                    } else if (opPedido == 3) {
+                        int id;
+                        printf("ID do pedido a atualizar: ");
+                        scanf("%d", &id);
+                        int idx = buscarPedidoPorId(&pedidos, id);
+                        if (idx == -1) {
+                            printf("Pedido não encontrado!\n");
+                        } else {
+                            Pedido novo;
+                            printf("Novo ID: ");
+                            scanf("%d", &novo.id);
+                            printf("Novo índice de origem: ");
+                            scanf("%d", &novo.origem);
+                            printf("Novo índice de destino: ");
+                            scanf("%d", &novo.destino);
+                            printf("Novo peso (kg): ");
+                            scanf("%f", &novo.peso);
+                            if (atualizarPedido(&pedidos, id, novo))
+                                printf("Pedido atualizado!\n");
+                            else
+                                printf("Erro ao atualizar!\n");
+                        }
+                    } else if (opPedido == 4) {
+                        int id;
+                        printf("ID do pedido a remover: ");
+                        scanf("%d", &id);
+                        if (removerPedido(&pedidos, id))
+                            printf("Pedido removido!\n");
+                        else
+                            printf("Pedido não encontrado!\n");
+                    }
+                } while(opPedido != 0);
                 break;
+            }
             case 4:
                 // Calcular e exibir rota
                 break;
             case 5:
-                // Backup
+                if (salvarBackup(&locais, &veiculos, &pedidos))
+                    printf("Backup realizado com sucesso!\n");
+                else
+                    printf("Erro ao realizar backup!\n");
                 break;
             case 6:
-                // Restaurar
+                if (restaurarBackup(&locais, &veiculos, &pedidos))
+                    printf("Dados restaurados com sucesso!\n");
+                else
+                    printf("Erro ao restaurar dados!\n");
                 break;
             case 0:
                 printf("Saindo...\n");
