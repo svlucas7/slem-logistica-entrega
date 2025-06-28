@@ -18,6 +18,75 @@ void exibirMenu() {
     printf("Escolha uma opção: ");
 }
 
+void submenuVeiculos(ListaVeiculos* veiculos) {
+    int opcao;
+    do {
+        printf("\n--- Cadastro de Veículos ---\n");
+        printf("1. Adicionar Veículo\n");
+        printf("2. Listar Veículos\n");
+        printf("3. Atualizar Veículo\n");
+        printf("4. Remover Veículo\n");
+        printf("0. Voltar\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+        getchar(); // Limpa buffer
+        if (opcao == 1) {
+            Veiculo v;
+            printf("Placa: ");
+            fgets(v.placa, MAX_PLACA, stdin);
+            v.placa[strcspn(v.placa, "\n")] = 0;
+            printf("Modelo: ");
+            fgets(v.modelo, MAX_MODELO, stdin);
+            v.modelo[strcspn(v.modelo, "\n")] = 0;
+            v.status = DISPONIVEL;
+            printf("Local atual (índice): ");
+            scanf("%d", &v.localAtual);
+            getchar();
+            if (adicionarVeiculo(veiculos, v))
+                printf("Veículo adicionado com sucesso!\n");
+            else
+                printf("Erro: Placa já cadastrada.\n");
+        } else if (opcao == 2) {
+            listarVeiculos(veiculos);
+        } else if (opcao == 3) {
+            char placa[MAX_PLACA];
+            printf("Placa do veículo a atualizar: ");
+            fgets(placa, MAX_PLACA, stdin);
+            placa[strcspn(placa, "\n")] = 0;
+            int idx = buscarVeiculoPorPlaca(veiculos, placa);
+            if (idx == -1) {
+                printf("Veículo não encontrado.\n");
+            } else {
+                Veiculo v = veiculos->veiculos[idx];
+                printf("Novo modelo: ");
+                fgets(v.modelo, MAX_MODELO, stdin);
+                v.modelo[strcspn(v.modelo, "\n")] = 0;
+                printf("Novo status (0=Disponível, 1=Ocupado): ");
+                int st;
+                scanf("%d", &st);
+                getchar();
+                v.status = st == 0 ? DISPONIVEL : OCUPADO;
+                printf("Novo local atual (índice): ");
+                scanf("%d", &v.localAtual);
+                getchar();
+                if (atualizarVeiculo(veiculos, placa, v))
+                    printf("Veículo atualizado!\n");
+                else
+                    printf("Erro ao atualizar.\n");
+            }
+        } else if (opcao == 4) {
+            char placa[MAX_PLACA];
+            printf("Placa do veículo a remover: ");
+            fgets(placa, MAX_PLACA, stdin);
+            placa[strcspn(placa, "\n")] = 0;
+            if (removerVeiculo(veiculos, placa))
+                printf("Veículo removido!\n");
+            else
+                printf("Veículo não encontrado.\n");
+        }
+    } while(opcao != 0);
+}
+
 int main() {
     ListaLocais locais;
     ListaVeiculos veiculos;
@@ -94,7 +163,7 @@ int main() {
                 break;
             }
             case 2:
-                // CRUD Veículos
+                submenuVeiculos(&veiculos);
                 break;
             case 3: {
                 int opPedido;
@@ -159,7 +228,16 @@ int main() {
                 break;
             }
             case 4:
-                // Calcular e exibir rota
+                if (pedidos.quantidade == 0) {
+                    printf("Nenhum pedido cadastrado!\n");
+                    break;
+                }
+                listarPedidos(&pedidos);
+                printf("Digite o ID do pedido para calcular a rota: ");
+                int idPedido;
+                scanf("%d", &idPedido);
+                getchar();
+                exibirRotaEntrega(&veiculos, &locais, &pedidos, idPedido);
                 break;
             case 5:
                 if (salvarBackup(&locais, &veiculos, &pedidos))

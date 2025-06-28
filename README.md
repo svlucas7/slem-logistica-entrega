@@ -24,15 +24,47 @@ data/       # Arquivos binários de backup
 ```
 
 ## Backlog do Produto
-| ID  | Funcionalidade                        | Sprint | Responsável     |
-|-----|---------------------------------------|--------|-----------------|
-| 1   | Cadastro de Locais (CRUD)             | 1      | Lucas Silva     |
-| 2   | Cadastro de Veículos (CRUD)           | 1      | Gabriel Costa   |
-| 3   | Cadastro de Pedidos (CRUD)            | 2      | Lucas Silva     |
-| 4   | Cálculo e Exibição de Rota de Entrega | 2      | Gabriel Costa   |
-| 5   | Backup e Restauração de Dados         | 3      | Ambos           |
-| 6   | Menu Principal e Integração           | 3      | Ambos           |
-| 7   | Testes Automatizados (munit)          | 3      | Ambos           |
+| ID  | Funcionalidade                        | Sprint | Responsável     | Status    |
+|-----|---------------------------------------|--------|-----------------|-----------|
+| 1   | Cadastro de Locais (CRUD)             | 1      | Lucas Silva     | Concluído |
+| 2   | Cadastro de Veículos (CRUD)           | 1      | Gabriel Costa   | Feito |
+| 3   | Cadastro de Pedidos (CRUD)            | 2      | Lucas Silva     | Em andamento |
+| 4   | Cálculo e Exibição de Rota de Entrega | 2      | Gabriel Costa   | Feito  |
+| 5   | Backup e Restauração de Dados         | 3      | Ambos           | Pendente  |
+| 6   | Menu Principal e Integração           | 3      | Ambos           | Pendente  |
+| 7   | Testes Automatizados (munit)          | 3      | Ambos           | Pendente  |
+
+## Instruções para o Gabriel (CRUD de Veículos)
+
+1. **Atualize seu repositório:**
+   - Se ainda não clonou:  
+     `git clone <URL_DO_REPOSITORIO>`
+   - Se já clonou:  
+     `git pull origin main`
+
+2. **Troque para sua branch de trabalho:**
+   ```sh
+   git checkout gabriel/veiculos-crud
+   ```
+
+3. **Implemente o CRUD de Veículos:**
+   - No arquivo `main.c`, crie um submenu para Veículos, semelhante ao de Locais, com as opções:
+     - Adicionar Veículo
+     - Listar Veículos
+     - Atualizar Veículo
+     - Remover Veículo
+   - Utilize as funções já existentes em `veiculos.h` e `veiculos.c`.
+
+4. **Faça commits frequentes e envie para o repositório:**
+   ```sh
+   git add .
+   git commit -m "Implementa CRUD de Veículos"
+   git push origin gabriel/veiculos-crud
+   ```
+
+5. **Quando terminar:**
+   - Abra um Pull Request para a branch `main`.
+   - Atualize o backlog no `README.md`, marcando a tarefa como concluída e preenchendo a coluna de status.
 
 ## Compilação
 Utilize um compilador C (gcc) para compilar o projeto. Exemplo:
