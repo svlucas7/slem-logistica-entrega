@@ -110,7 +110,16 @@ int main() {
                 // CRUD Pedidos
                 break;
             case 4:
-                // Calcular e exibir rota
+                if (pedidos.quantidade == 0) {
+                    printf("Nenhum pedido cadastrado!\n");
+                    break;
+                }
+                listarPedidos(&pedidos);
+                printf("Digite o ID do pedido para calcular a rota: ");
+                int idPedido;
+                scanf("%d", &idPedido);
+                getchar();
+                exibirRotaEntrega(&veiculos, &locais, &pedidos, idPedido);
                 break;
             case 5:
                 // Backup
