@@ -2,12 +2,14 @@
 #include <math.h>
 #include "rota.h"
 
+// Calcula a distância euclidiana entre dois locais
 float calcularDistancia(Local a, Local b) {
     float dx = a.x - b.x;
     float dy = a.y - b.y;
     return sqrt(dx * dx + dy * dy);
 }
 
+// Encontra o índice do veículo disponível mais próximo do local de origem
 int encontrarVeiculoMaisProximo(ListaVeiculos* veiculos, ListaLocais* locais, int origem) {
     int idx = -1;
     float menorDist = -1;
@@ -23,6 +25,7 @@ int encontrarVeiculoMaisProximo(ListaVeiculos* veiculos, ListaLocais* locais, in
     return idx;
 }
 
+// Exibe a rota de entrega para um pedido, selecionando o veículo mais próximo
 void exibirRotaEntrega(ListaVeiculos* veiculos, ListaLocais* locais, ListaPedidos* pedidos, int idPedido) {
     int idxPedido = buscarPedidoPorId(pedidos, idPedido);
     if (idxPedido == -1) {

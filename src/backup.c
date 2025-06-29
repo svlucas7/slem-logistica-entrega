@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "backup.h"
 
+// Salva os dados das listas de locais, veículos e pedidos em arquivos binários
 int salvarBackup(const ListaLocais* locais, const ListaVeiculos* veiculos, const ListaPedidos* pedidos) {
     FILE* f;
     f = fopen("data/locais.bin", "wb");
@@ -23,6 +24,7 @@ int salvarBackup(const ListaLocais* locais, const ListaVeiculos* veiculos, const
     return 1;
 }
 
+// Restaura os dados das listas de locais, veículos e pedidos a partir dos arquivos binários
 int restaurarBackup(ListaLocais* locais, ListaVeiculos* veiculos, ListaPedidos* pedidos) {
     FILE* f;
     int qtd;

@@ -4,12 +4,14 @@
 
 #define CAPACIDADE_INICIAL 10
 
+// Inicializa a lista de pedidos com capacidade inicial
 void inicializarListaPedidos(ListaPedidos* lista) {
     lista->quantidade = 0;
     lista->capacidade = CAPACIDADE_INICIAL;
     lista->pedidos = (Pedido*)malloc(lista->capacidade * sizeof(Pedido));
 }
 
+// Libera a memória alocada para a lista de pedidos
 void destruirListaPedidos(ListaPedidos* lista) {
     free(lista->pedidos);
     lista->pedidos = NULL;
@@ -17,6 +19,7 @@ void destruirListaPedidos(ListaPedidos* lista) {
     lista->capacidade = 0;
 }
 
+// Adiciona um novo pedido à lista, se não existir outro com o mesmo id
 int adicionarPedido(ListaPedidos* lista, Pedido pedido) {
     if (buscarPedidoPorId(lista, pedido.id) != -1) return 0; // já existe
     if (lista->quantidade == lista->capacidade) {
@@ -27,6 +30,7 @@ int adicionarPedido(ListaPedidos* lista, Pedido pedido) {
     return 1;
 }
 
+// Busca o índice de um pedido pelo id. Retorna -1 se não encontrado
 int buscarPedidoPorId(ListaPedidos* lista, int id) {
     for (int i = 0; i < lista->quantidade; i++) {
         if (lista->pedidos[i].id == id) return i;
@@ -34,6 +38,7 @@ int buscarPedidoPorId(ListaPedidos* lista, int id) {
     return -1;
 }
 
+// Atualiza os dados de um pedido identificado pelo id
 int atualizarPedido(ListaPedidos* lista, int id, Pedido novoPedido) {
     int idx = buscarPedidoPorId(lista, id);
     if (idx == -1) return 0;
@@ -41,6 +46,7 @@ int atualizarPedido(ListaPedidos* lista, int id, Pedido novoPedido) {
     return 1;
 }
 
+// Remove um pedido da lista pelo id
 int removerPedido(ListaPedidos* lista, int id) {
     int idx = buscarPedidoPorId(lista, id);
     if (idx == -1) return 0;
@@ -51,6 +57,7 @@ int removerPedido(ListaPedidos* lista, int id) {
     return 1;
 }
 
+// Exibe todos os pedidos cadastrados
 void listarPedidos(ListaPedidos* lista) {
     printf("\nPedidos cadastrados:\n");
     for (int i = 0; i < lista->quantidade; i++) {

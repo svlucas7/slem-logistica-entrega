@@ -6,6 +6,7 @@
 #include "rota.h"
 #include "backup.h"
 
+// Exibe o menu principal do sistema
 void exibirMenu() {
     printf("\n==== Sistema de Logística de Entrega de Mercadorias (SLEM) ====\n");
     printf("1. Cadastro de Locais\n");
@@ -18,6 +19,7 @@ void exibirMenu() {
     printf("Escolha uma opção: ");
 }
 
+// Submenu para operações de veículos (CRUD)
 void submenuVeiculos(ListaVeiculos* veiculos) {
     int opcao;
     do {
@@ -87,6 +89,7 @@ void submenuVeiculos(ListaVeiculos* veiculos) {
     } while(opcao != 0);
 }
 
+// Função principal: inicializa listas, exibe menu e executa operações
 int main() {
     ListaLocais locais;
     ListaVeiculos veiculos;
