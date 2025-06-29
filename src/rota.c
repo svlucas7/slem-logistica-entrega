@@ -2,14 +2,15 @@
 #include <math.h>
 #include "rota.h"
 
-// Calcula a distância euclidiana entre dois locais
+// Calcula a distância euclidiana entre dois locais (usada para determinar a rota mais curta)
 float calcularDistancia(Local a, Local b) {
     float dx = a.x - b.x;
     float dy = a.y - b.y;
     return sqrt(dx * dx + dy * dy);
 }
 
-// Encontra o índice do veículo disponível mais próximo do local de origem
+// Encontra o índice do veículo disponível mais próximo do local de origem do pedido
+// Percorre todos os veículos disponíveis e retorna o de menor distância
 int encontrarVeiculoMaisProximo(ListaVeiculos* veiculos, ListaLocais* locais, int origem) {
     int idx = -1;
     float menorDist = -1;
@@ -25,7 +26,8 @@ int encontrarVeiculoMaisProximo(ListaVeiculos* veiculos, ListaLocais* locais, in
     return idx;
 }
 
-// Exibe a rota de entrega para um pedido, selecionando o veículo mais próximo
+// Exibe a rota de entrega para um pedido, mostrando veículo, origem, destino e distância total
+// Atualiza o status e local do veículo após a entrega
 void exibirRotaEntrega(ListaVeiculos* veiculos, ListaLocais* locais, ListaPedidos* pedidos, int idPedido) {
     int idxPedido = buscarPedidoPorId(pedidos, idPedido);
     if (idxPedido == -1) {
@@ -46,7 +48,7 @@ void exibirRotaEntrega(ListaVeiculos* veiculos, ListaLocais* locais, ListaPedido
     printf("Origem: %s\n", locais->locais[pedido->origem].nome);
     printf("Destino: %s\n", locais->locais[pedido->destino].nome);
     printf("Distância total: %.2f\n", dist);
-    // Simulação da entrega
+    // Simulação da entrega: status do veículo é alterado e local atualizado
     veiculo->status = OCUPADO;
     veiculo->localAtual = pedido->destino;
     veiculo->status = DISPONIVEL;

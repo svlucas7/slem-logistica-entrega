@@ -5,14 +5,14 @@
 
 #define CAPACIDADE_INICIAL 10
 
-// Inicializa a lista de veículos com capacidade inicial
+// Inicializa a lista dinâmica de veículos, alocando memória inicial
 void inicializarListaVeiculos(ListaVeiculos* lista) {
     lista->quantidade = 0;
     lista->capacidade = CAPACIDADE_INICIAL;
     lista->veiculos = (Veiculo*)malloc(lista->capacidade * sizeof(Veiculo));
 }
 
-// Libera a memória alocada para a lista de veículos
+// Libera toda a memória alocada para a lista de veículos
 void destruirListaVeiculos(ListaVeiculos* lista) {
     free(lista->veiculos);
     lista->veiculos = NULL;
@@ -20,10 +20,12 @@ void destruirListaVeiculos(ListaVeiculos* lista) {
     lista->capacidade = 0;
 }
 
-// Adiciona um novo veículo à lista, se não existir outro com a mesma placa
+// Adiciona um novo veículo ao vetor, se não existir outro com a mesma placa
+// Retorna 1 se sucesso, 0 se já existe
 int adicionarVeiculo(ListaVeiculos* lista, Veiculo veiculo) {
     if (buscarVeiculoPorPlaca(lista, veiculo.placa) != -1) return 0; // já existe
     if (lista->quantidade == lista->capacidade) {
+        // Dobra a capacidade do vetor se necessário
         lista->capacidade *= 2;
         lista->veiculos = (Veiculo*)realloc(lista->veiculos, lista->capacidade * sizeof(Veiculo));
     }
@@ -47,7 +49,7 @@ int atualizarVeiculo(ListaVeiculos* lista, const char* placa, Veiculo novoVeicul
     return 1;
 }
 
-// Remove um veículo da lista pela placa
+// Remove um veículo do vetor pela placa, deslocando os elementos
 int removerVeiculo(ListaVeiculos* lista, const char* placa) {
     int idx = buscarVeiculoPorPlaca(lista, placa);
     if (idx == -1) return 0;
@@ -58,7 +60,7 @@ int removerVeiculo(ListaVeiculos* lista, const char* placa) {
     return 1;
 }
 
-// Exibe todos os veículos cadastrados
+// Exibe todos os veículos cadastrados, mostrando placa, modelo, status e local
 void listarVeiculos(ListaVeiculos* lista) {
     printf("\nVeículos cadastrados:\n");
     for (int i = 0; i < lista->quantidade; i++) {

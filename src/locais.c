@@ -5,14 +5,14 @@
 
 #define CAPACIDADE_INICIAL 10
 
-// Inicializa a lista de locais com capacidade inicial
+// Inicializa a lista dinâmica de locais, alocando memória inicial
 void inicializarListaLocais(ListaLocais* lista) {
     lista->quantidade = 0;
     lista->capacidade = CAPACIDADE_INICIAL;
     lista->locais = (Local*)malloc(lista->capacidade * sizeof(Local));
 }
 
-// Libera a memória alocada para a lista de locais
+// Libera toda a memória alocada para a lista de locais
 void destruirListaLocais(ListaLocais* lista) {
     free(lista->locais);
     lista->locais = NULL;
@@ -20,10 +20,12 @@ void destruirListaLocais(ListaLocais* lista) {
     lista->capacidade = 0;
 }
 
-// Adiciona um novo local à lista, se não existir outro com o mesmo nome
+// Adiciona um novo local ao vetor, se não existir outro com o mesmo nome
+// Retorna 1 se sucesso, 0 se já existe
 int adicionarLocal(ListaLocais* lista, Local local) {
     if (buscarLocalPorNome(lista, local.nome) != -1) return 0; // já existe
     if (lista->quantidade == lista->capacidade) {
+        // Dobra a capacidade do vetor se necessário
         lista->capacidade *= 2;
         lista->locais = (Local*)realloc(lista->locais, lista->capacidade * sizeof(Local));
     }
@@ -47,7 +49,7 @@ int atualizarLocal(ListaLocais* lista, const char* nome, Local novoLocal) {
     return 1;
 }
 
-// Remove um local da lista pelo nome
+// Remove um local do vetor pelo nome, deslocando os elementos
 int removerLocal(ListaLocais* lista, const char* nome) {
     int idx = buscarLocalPorNome(lista, nome);
     if (idx == -1) return 0;
@@ -58,7 +60,7 @@ int removerLocal(ListaLocais* lista, const char* nome) {
     return 1;
 }
 
-// Exibe todos os locais cadastrados
+// Exibe todos os locais cadastrados, mostrando nome e coordenadas
 void listarLocais(ListaLocais* lista) {
     printf("\nLocais cadastrados:\n");
     for (int i = 0; i < lista->quantidade; i++) {
