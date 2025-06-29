@@ -1,85 +1,74 @@
-# slem-logistica-entrega
-Sistema de Logística de Entrega de Mercadorias (Trabalho interdisciplinar - FES + AED1 - PUC Minas)
-
 # Sistema de Logística de Entrega de Mercadorias (SLEM)
+
+## Descrição
+O SLEM é um sistema desenvolvido em C para gerenciar entregas de mercadorias, permitindo o cadastro e gerenciamento de locais, veículos e pedidos, além do cálculo de rotas de entrega e funcionalidades de backup/restauração de dados. O projeto inclui testes automatizados e documentação completa.
 
 ## Integrantes
 - Lucas Silva
 - Gabriel Costa
 
-## Descrição
-Sistema para gerenciamento de pedidos, veículos e locais, com cálculo de rotas de entrega, backup/restauração de dados e testes automatizados.
-
 ## Estrutura do Projeto
 ```
-src/        # Código-fonte principal
-  locais.h/.c
-  veiculos.h/.c
-  pedidos.h/.c
-  rota.h/.c
-  backup.h/.c
-  main.c
-tests/      # Testes automatizados (munit)
-data/       # Arquivos binários de backup
+src/        Código-fonte principal (.c, .h)
+tests/      Testes automatizados (munit)
+data/       Arquivos binários de backup
+docs/       Documentação e diagramas
+slem.exe    Executável principal
 ```
 
-## Backlog do Produto
-| ID  | Funcionalidade                        | Sprint | Responsável     | Status      |
-|-----|---------------------------------------|--------|-----------------|-------------|
-| 1   | Cadastro de Locais (CRUD)             | 1      | Lucas Silva     | Feito       |
-| 2   | Cadastro de Veículos (CRUD)           | 1      | Gabriel Costa   | Feito       |
-| 3   | Cadastro de Pedidos (CRUD)            | 2      | Lucas Silva     | Feito       |
-| 4   | Cálculo e Exibição de Rota de Entrega | 2      | Gabriel Costa   | Feito       |
-| 5   | Backup e Restauração de Dados         | 3      | Ambos           | Feito       |
-| 6   | Menu Principal e Integração           | 3      | Ambos           | Feito       |
-| 7   | Testes Automatizados (munit)          | 3      | Ambos           | Feito       |
-
-## Instruções para o Gabriel (CRUD de Veículos)
-
-1. **Atualize seu repositório:**
-   - Se ainda não clonou:  
-     `git clone <URL_DO_REPOSITORIO>`
-   - Se já clonou:  
-     `git pull origin main`
-
-2. **Troque para sua branch de trabalho:**
-   ```sh
-   git checkout gabriel/veiculos-crud
-   ```
-
-3. **Implemente o CRUD de Veículos:**
-   - No arquivo `main.c`, crie um submenu para Veículos, semelhante ao de Locais, com as opções:
-     - Adicionar Veículo
-     - Listar Veículos
-     - Atualizar Veículo
-     - Remover Veículo
-   - Utilize as funções já existentes em `veiculos.h` e `veiculos.c`.
-
-4. **Faça commits frequentes e envie para o repositório:**
-   ```sh
-   git add .
-   git commit -m "Implementa CRUD de Veículos"
-   git push origin gabriel/veiculos-crud
-   ```
-
-5. **Quando terminar:**
-   - Abra um Pull Request para a branch `main`.
-   - Atualize o backlog no `README.md`, marcando a tarefa como concluída e preenchendo a coluna de status.
+## Funcionalidades
+- Cadastro, consulta, atualização e remoção de Locais
+- Cadastro, consulta, atualização e remoção de Veículos
+- Cadastro, consulta, atualização e remoção de Pedidos
+- Cálculo e exibição de rotas de entrega
+- Backup e restauração dos dados do sistema
+- Testes automatizados para Locais, Veículos e Pedidos
 
 ## Compilação
-Utilize um compilador C (gcc) para compilar o projeto. Exemplo:
+Utilize um compilador C (ex: gcc) para compilar o projeto:
 ```sh
-gcc src/*.c -o slem
+gcc src/*.c -o slem.exe
+```
+O executável será gerado como `slem.exe`.
+
+## Execução
+Execute o sistema pelo terminal:
+```sh
+./slem.exe
 ```
 
-## Testes
-Os testes automatizados estarão na pasta `tests/` e utilizarão a biblioteca [munit](https://nemequ.github.io/munit/).
+## Testes Automatizados
+Os testes estão na pasta `tests/` e utilizam a biblioteca [munit](https://nemequ.github.io/munit/). Para compilar e rodar os testes:
+```sh
+gcc tests/test_locais.c munit/munit.c src/locais.c -o tests/test_locais.exe
+./tests/test_locais.exe
 
-## Observações
-- Dados são salvos em arquivos binários na pasta `data/`.
-- Não utilize o tipo `string`.
-- O menu principal está em loop até a opção de sair.
+gcc tests/test_veiculos.c munit/munit.c src/veiculos.c -o tests/test_veiculos.exe
+./tests/test_veiculos.exe
+
+gcc tests/test_pedidos.c munit/munit.c src/pedidos.c -o tests/test_pedidos.exe
+./tests/test_pedidos.exe
+```
+
+## Backup e Restauração
+Os dados do sistema são salvos em arquivos binários na pasta `data/`. Utilize as opções do menu principal para realizar backup ou restaurar os dados.
+
+## Documentação
+- **Diagrama de Arquitetura:** disponível em `docs/diagrama-arquitetura.html`.
+- **Análise de Complexidade:** incluída na documentação do projeto.
+- **Comentários:** todo o código-fonte está amplamente comentado para facilitar o entendimento.
+
+## Entrega
+1. Compacte todo o projeto em um arquivo `.zip` (ex: `SLEM_NomeAluno.zip`), incluindo:
+   - Código-fonte (.c, .h, Makefile, etc.)
+   - Executável (`slem.exe`)
+   - Documentação (Word/PDF)
+   - Diagramas (ou inclua no Word)
+   - Pasta de testes
+2. Envie o `.zip` pelo Canvas até a data definida.
+3. Participe da apresentação/entrevista com o professor, demonstrando o sistema e explicando a documentação.
+4. Se solicitado, envie também o link do repositório no GitHub.
 
 ---
-Pontifícia Universidade Católica de Minas Gerais
+Pontifícia Universidade Católica de Minas Gerais  
 Engenharia de Computação - Fundamentos de Engenharia de Software + AED I
