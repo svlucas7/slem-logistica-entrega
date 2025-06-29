@@ -71,4 +71,4 @@ Os dados do sistema são salvos em arquivos binários na pasta `data/`. Utilize 
 
 ---
 Pontifícia Universidade Católica de Minas Gerais  
-Engenharia de Computação - Fundamentos de Engenharia de Software + AED I
+Engenharia de Software - Fundamentos de Engenharia de Software + AED I
