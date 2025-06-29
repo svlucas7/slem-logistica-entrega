@@ -6,6 +6,7 @@
 #include "rota.h"
 #include "backup.h"
 
+// Exibe o menu principal do sistema SLEM, mostrando todas as opções disponíveis ao usuário
 void exibirMenu() {
     printf("\n==== Sistema de Logística de Entrega de Mercadorias (SLEM) ====\n");
     printf("1. Cadastro de Locais\n");
@@ -18,6 +19,8 @@ void exibirMenu() {
     printf("Escolha uma opção: ");
 }
 
+// Submenu para operações de veículos (CRUD)
+// Permite adicionar, listar, atualizar e remover veículos
 void submenuVeiculos(ListaVeiculos* veiculos) {
     int opcao;
     do {
@@ -29,8 +32,9 @@ void submenuVeiculos(ListaVeiculos* veiculos) {
         printf("0. Voltar\n");
         printf("Escolha uma opção: ");
         scanf("%d", &opcao);
-        getchar(); // Limpa buffer
+        getchar(); // Limpa buffer do teclado
         if (opcao == 1) {
+            // Adiciona um novo veículo
             Veiculo v;
             printf("Placa: ");
             fgets(v.placa, MAX_PLACA, stdin);
@@ -47,8 +51,10 @@ void submenuVeiculos(ListaVeiculos* veiculos) {
             else
                 printf("Erro: Placa já cadastrada.\n");
         } else if (opcao == 2) {
+            // Lista todos os veículos cadastrados
             listarVeiculos(veiculos);
         } else if (opcao == 3) {
+            // Atualiza os dados de um veículo existente
             char placa[MAX_PLACA];
             printf("Placa do veículo a atualizar: ");
             fgets(placa, MAX_PLACA, stdin);
@@ -75,6 +81,7 @@ void submenuVeiculos(ListaVeiculos* veiculos) {
                     printf("Erro ao atualizar.\n");
             }
         } else if (opcao == 4) {
+            // Remove um veículo pelo número da placa
             char placa[MAX_PLACA];
             printf("Placa do veículo a remover: ");
             fgets(placa, MAX_PLACA, stdin);
@@ -87,13 +94,15 @@ void submenuVeiculos(ListaVeiculos* veiculos) {
     } while(opcao != 0);
 }
 
+// Função principal do sistema
+// Inicializa as listas, exibe o menu principal e executa as operações escolhidas pelo usuário
 int main() {
     ListaLocais locais;
     ListaVeiculos veiculos;
     ListaPedidos pedidos;
-    inicializarListaLocais(&locais);
-    inicializarListaVeiculos(&veiculos);
-    inicializarListaPedidos(&pedidos);
+    inicializarListaLocais(&locais); // Vetor dinâmico de locais
+    inicializarListaVeiculos(&veiculos); // Vetor dinâmico de veículos
+    inicializarListaPedidos(&pedidos); // Vetor dinâmico de pedidos
 
     int opcao;
     do {
@@ -101,6 +110,7 @@ int main() {
         scanf("%d", &opcao);
         switch(opcao) {
             case 1: {
+                // Submenu para CRUD de Locais
                 int opLocal;
                 do {
                     printf("\n--- Cadastro de Locais ---\n");
@@ -113,6 +123,7 @@ int main() {
                     scanf("%d", &opLocal);
                     getchar(); // Limpar buffer
                     if (opLocal == 1) {
+                        // Adiciona um novo local
                         Local l;
                         printf("Nome do local: ");
                         fgets(l.nome, MAX_NOME_LOCAL, stdin);
@@ -126,8 +137,10 @@ int main() {
                         else
                             printf("Local já existe!\n");
                     } else if (opLocal == 2) {
+                        // Lista todos os locais
                         listarLocais(&locais);
                     } else if (opLocal == 3) {
+                        // Atualiza um local existente
                         char nome[MAX_NOME_LOCAL];
                         printf("Nome do local a atualizar: ");
                         fgets(nome, MAX_NOME_LOCAL, stdin);
@@ -150,6 +163,7 @@ int main() {
                                 printf("Erro ao atualizar!\n");
                         }
                     } else if (opLocal == 4) {
+                        // Remove um local pelo nome
                         char nome[MAX_NOME_LOCAL];
                         printf("Nome do local a remover: ");
                         fgets(nome, MAX_NOME_LOCAL, stdin);
@@ -163,9 +177,11 @@ int main() {
                 break;
             }
             case 2:
+                // Submenu para CRUD de Veículos
                 submenuVeiculos(&veiculos);
                 break;
             case 3: {
+                // Submenu para CRUD de Pedidos
                 int opPedido;
                 do {
                     printf("\n--- Cadastro de Pedidos ---\n");
@@ -178,6 +194,7 @@ int main() {
                     scanf("%d", &opPedido);
                     getchar();
                     if (opPedido == 1) {
+                        // Adiciona um novo pedido
                         Pedido p;
                         printf("ID do pedido: ");
                         scanf("%d", &p.id);
@@ -192,8 +209,10 @@ int main() {
                         else
                             printf("Pedido já existe!\n");
                     } else if (opPedido == 2) {
+                        // Lista todos os pedidos
                         listarPedidos(&pedidos);
                     } else if (opPedido == 3) {
+                        // Atualiza um pedido existente
                         int id;
                         printf("ID do pedido a atualizar: ");
                         scanf("%d", &id);
@@ -216,6 +235,7 @@ int main() {
                                 printf("Erro ao atualizar!\n");
                         }
                     } else if (opPedido == 4) {
+                        // Remove um pedido pelo id
                         int id;
                         printf("ID do pedido a remover: ");
                         scanf("%d", &id);
@@ -228,6 +248,7 @@ int main() {
                 break;
             }
             case 4:
+                // Calcula e exibe a rota de entrega para um pedido selecionado
                 if (pedidos.quantidade == 0) {
                     printf("Nenhum pedido cadastrado!\n");
                     break;
@@ -240,12 +261,14 @@ int main() {
                 exibirRotaEntrega(&veiculos, &locais, &pedidos, idPedido);
                 break;
             case 5:
+                // Realiza backup dos dados em arquivos binários
                 if (salvarBackup(&locais, &veiculos, &pedidos))
                     printf("Backup realizado com sucesso!\n");
                 else
                     printf("Erro ao realizar backup!\n");
                 break;
             case 6:
+                // Restaura os dados dos arquivos binários
                 if (restaurarBackup(&locais, &veiculos, &pedidos))
                     printf("Dados restaurados com sucesso!\n");
                 else
@@ -259,6 +282,7 @@ int main() {
         }
     } while(opcao != 0);
 
+    // Libera toda a memória alocada antes de encerrar o programa
     destruirListaLocais(&locais);
     destruirListaVeiculos(&veiculos);
     destruirListaPedidos(&pedidos);

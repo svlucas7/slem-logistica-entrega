@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Diagrama de Arquitetura - SLEM</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f9f9f9; }
+        .diagram {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 40px;
+        }
+        .box {
+            border: 2px solid #0074D9;
+            background: #e6f2ff;
+            padding: 16px 32px;
+            border-radius: 8px;
+            margin: 8px;
+            font-weight: bold;
+            min-width: 220px;
+            text-align: center;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            margin: 8px 0;
+        }
+        .arrow {
+            font-size: 32px;
+            color: #0074D9;
+            margin: 0 12px;
+        }
+        .explanation {
+            margin: 40px auto 0 auto;
+            max-width: 700px;
+            background: #fff;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 2px 8px #0001;
+        }
+        ul { margin-top: 0; }
+    </style>
+</head>
+<body>
+    <h1 style="text-align:center; color:#0074D9;">Diagrama de Arquitetura do Sistema SLEM</h1>
+    <div class="diagram">
+        <div class="box">main.c<br><span style="font-size:12px; font-weight:normal;">(Menu principal e integração)</span></div>
+        <div class="arrow">&#8595;</div>
+        <div class="row">
+            <div class="box">locais.c/h</div>
+            <div class="box">veiculos.c/h</div>
+            <div class="box">pedidos.c/h</div>
+            <div class="box">rota.c/h</div>
+            <div class="box">backup.c/h</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+        <div class="row">
+            <div class="box">data/<br><span style="font-size:12px; font-weight:normal;">(arquivos binários)</span></div>
+            <div class="box">tests/<br><span style="font-size:12px; font-weight:normal;">(testes automatizados)</span></div>
+        </div>
+    </div>
+    <div class="explanation">
+        <h2>Explicação das partes</h2>
+        <ul>
+            <li><b>main.c</b>: Menu principal e integração dos módulos.</li>
+            <li><b>locais.c/h</b>: CRUD de Locais.</li>
+            <li><b>veiculos.c/h</b>: CRUD de Veículos.</li>
+            <li><b>pedidos.c/h</b>: CRUD de Pedidos.</li>
+            <li><b>rota.c/h</b>: Cálculo e exibição de rotas de entrega.</li>
+            <li><b>backup.c/h</b>: Backup e restauração dos dados.</li>
+            <li><b>data/</b>: Arquivos binários de backup.</li>
+            <li><b>tests/</b>: Testes automatizados do sistema.</li>
+        </ul>
+    </div>
+</body>
+</html>

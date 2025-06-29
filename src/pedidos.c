@@ -4,12 +4,14 @@
 
 #define CAPACIDADE_INICIAL 10
 
+// Inicializa a lista dinâmica de pedidos, alocando memória inicial
 void inicializarListaPedidos(ListaPedidos* lista) {
     lista->quantidade = 0;
     lista->capacidade = CAPACIDADE_INICIAL;
     lista->pedidos = (Pedido*)malloc(lista->capacidade * sizeof(Pedido));
 }
 
+// Libera toda a memória alocada para a lista de pedidos
 void destruirListaPedidos(ListaPedidos* lista) {
     free(lista->pedidos);
     lista->pedidos = NULL;
@@ -17,9 +19,12 @@ void destruirListaPedidos(ListaPedidos* lista) {
     lista->capacidade = 0;
 }
 
+// Adiciona um novo pedido ao vetor, se não existir outro com o mesmo id
+// Retorna 1 se sucesso, 0 se já existe
 int adicionarPedido(ListaPedidos* lista, Pedido pedido) {
     if (buscarPedidoPorId(lista, pedido.id) != -1) return 0; // já existe
     if (lista->quantidade == lista->capacidade) {
+        // Dobra a capacidade do vetor se necessário
         lista->capacidade *= 2;
         lista->pedidos = (Pedido*)realloc(lista->pedidos, lista->capacidade * sizeof(Pedido));
     }
@@ -27,6 +32,7 @@ int adicionarPedido(ListaPedidos* lista, Pedido pedido) {
     return 1;
 }
 
+// Busca o índice de um pedido pelo id. Retorna -1 se não encontrado
 int buscarPedidoPorId(ListaPedidos* lista, int id) {
     for (int i = 0; i < lista->quantidade; i++) {
         if (lista->pedidos[i].id == id) return i;
@@ -34,6 +40,7 @@ int buscarPedidoPorId(ListaPedidos* lista, int id) {
     return -1;
 }
 
+// Atualiza os dados de um pedido identificado pelo id
 int atualizarPedido(ListaPedidos* lista, int id, Pedido novoPedido) {
     int idx = buscarPedidoPorId(lista, id);
     if (idx == -1) return 0;
@@ -41,6 +48,7 @@ int atualizarPedido(ListaPedidos* lista, int id, Pedido novoPedido) {
     return 1;
 }
 
+// Remove um pedido do vetor pelo id, deslocando os elementos
 int removerPedido(ListaPedidos* lista, int id) {
     int idx = buscarPedidoPorId(lista, id);
     if (idx == -1) return 0;
@@ -51,6 +59,7 @@ int removerPedido(ListaPedidos* lista, int id) {
     return 1;
 }
 
+// Exibe todos os pedidos cadastrados, mostrando id, origem, destino e peso
 void listarPedidos(ListaPedidos* lista) {
     printf("\nPedidos cadastrados:\n");
     for (int i = 0; i < lista->quantidade; i++) {
