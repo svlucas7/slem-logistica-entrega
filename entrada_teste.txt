@@ -1,0 +1,21 @@
+# Dados de Teste para SLEM
+
+## Locais de Teste
+Centro da Cidade,10.5,20.3
+Shopping Norte,15.2,25.7
+Aeroporto,30.1,45.8
+Terminal Rodoviário,8.9,12.4
+Zona Industrial,22.7,33.1
+
+## Veículos de Teste  
+ABC1234,Caminhão,1500.0,Disponível
+XYZ5678,Van,800.0,Em Manutenção
+DEF9012,Moto,50.0,Disponível
+GHI3456,Caminhão,2000.0,Disponível
+
+## Pedidos de Teste
+Centro da Cidade,Eletrônicos,15.5,Pendente
+Shopping Norte,Roupas,8.2,Em Trânsito
+Aeroporto,Documentos,1.0,Entregue
+Terminal Rodoviário,Medicamentos,25.3,Pendente
+Zona Industrial,Peças,45.7,Pendente
