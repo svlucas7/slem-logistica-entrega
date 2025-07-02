@@ -36,6 +36,9 @@
 *.x86_64
 *.hex
 
+# Except our main executable
+!slem.exe
+
 # Debug files
 *.dSYM/
 *.su
