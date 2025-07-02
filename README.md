@@ -72,3 +72,14 @@ Os dados do sistema são salvos em arquivos binários na pasta `data/`. Utilize 
 ---
 Pontifícia Universidade Católica de Minas Gerais  
 Engenharia de Software - Fundamentos de Engenharia de Software + AED I
+
+## Repositório GitHub
+🔗 **Link do projeto:** https://github.com/svlucas7/slem-logistica-entrega
+
+## Status do Projeto
+✅ **PROJETO FINALIZADO E PRONTO PARA ENTREGA**
+- Código funcional completo
+- Documentação Scrum com evidências
+- Testes automatizados implementados
+- Roteiro para vídeo de apresentação
+- Todas as funcionalidades implementadas
