@@ -54,14 +54,4 @@
 - Resumir aprendizados
 - Agradecer
 
-## Dicas para Gravação:
-1. Use OBS Studio ou similar para gravar tela
-2. Teste áudio antes de gravar
-3. Prepare dados de exemplo interessantes
-4. Grave em resolução HD (1280x720 mínimo)
-5. Fale pausadamente e com clareza
 
-## Entregáveis do Vídeo:
-- Arquivo MP4 (máx 500MB)
-- Upload no YouTube (pode ser não listado)
-- Link no README.md do projeto
