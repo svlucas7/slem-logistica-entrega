@@ -7,6 +7,12 @@
 #include "rota.h"
 #include "backup.h"
 
+// Funcao auxiliar para limpar completamente o buffer de entrada
+void limparBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
 // Exibe o menu principal do sistema SLEM, mostrando todas as opcoes disponiveis ao usuario
 void exibirMenu() {
     printf("\n==== Sistema de Logistica de Entrega de Mercadorias (SLEM) ====\n");
@@ -22,7 +28,7 @@ void exibirMenu() {
 
 // Submenu para operacoes de veiculos (CRUD)
 // Permite adicionar, listar, atualizar e remover veiculos
-void submenuVeiculos(ListaVeiculos* veiculos) {
+void submenuVeiculos(ListaVeiculos* veiculos, ListaLocais* locais) {
     int opcao;
     do {
         printf("\n--- Cadastro de Veiculos ---\n");
@@ -33,64 +39,96 @@ void submenuVeiculos(ListaVeiculos* veiculos) {
         printf("0. Voltar\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
-        getchar(); // Limpa buffer do teclado
+        limparBuffer();
         if (opcao == 1) {
             // Adiciona um novo veiculo
             Veiculo v;
-            printf("Placa: ");
+            limparBuffer();
+            printf("\nPlaca: ");
             fgets(v.placa, MAX_PLACA, stdin);
             v.placa[strcspn(v.placa, "\n")] = 0;
             printf("Modelo: ");
             fgets(v.modelo, MAX_MODELO, stdin);
             v.modelo[strcspn(v.modelo, "\n")] = 0;
             v.status = DISPONIVEL;
-            printf("Local atual (indice): ");
-            scanf("%d", &v.localAtual);
-            getchar();
+            printf("Locais cadastrados:\n");
+            listarLocais(locais);
+            char nomeLocal[MAX_NOME_LOCAL];
+            int idxLocal;
+            do {
+                printf("Local atual (nome): ");
+                fgets(nomeLocal, MAX_NOME_LOCAL, stdin);
+                nomeLocal[strcspn(nomeLocal, "\n")] = 0;
+                if (strlen(nomeLocal) == 0) {
+                    printf("Nome do local nao pode ser vazio. Tente novamente.\n");
+                    continue;
+                }
+                idxLocal = buscarLocalPorNome(locais, nomeLocal);
+                if (idxLocal == -1) {
+                    printf("Erro: Local nao encontrado. Tente novamente.\n");
+                    continue;
+                }
+                v.localAtual = idxLocal;
+                break;
+            } while (1);
             if (adicionarVeiculo(veiculos, v))
                 printf("Veiculo adicionado com sucesso!\n");
             else
                 printf("Erro: Placa ja cadastrada.\n");
         } else if (opcao == 2) {
-            // Lista todos os veiculos cadastrados
             listarVeiculos(veiculos);
         } else if (opcao == 3) {
-            // Atualiza os dados de um veiculo existente
             char placa[MAX_PLACA];
-            printf("Placa do veiculo a atualizar: ");
+            printf("\nPlaca do veiculo a atualizar: ");
             fgets(placa, MAX_PLACA, stdin);
             placa[strcspn(placa, "\n")] = 0;
             int idx = buscarVeiculoPorPlaca(veiculos, placa);
             if (idx == -1) {
-                printf("veiculo não encontrado.\n");
+                printf("Veiculo nao encontrado.\n");
             } else {
                 Veiculo v = veiculos->veiculos[idx];
                 printf("Novo modelo: ");
                 fgets(v.modelo, MAX_MODELO, stdin);
                 v.modelo[strcspn(v.modelo, "\n")] = 0;
-                printf("Novo status (0=Disponível, 1=Ocupado): ");
+                printf("Novo status (0=Disponivel, 1=Ocupado): ");
                 int st;
                 scanf("%d", &st);
-                getchar();
+                limparBuffer();
                 v.status = st == 0 ? DISPONIVEL : OCUPADO;
-                printf("Novo local atual (indice): ");
-                scanf("%d", &v.localAtual);
-                getchar();
+                printf("Locais cadastrados:\n");
+                listarLocais(locais);
+                char nomeLocal[MAX_NOME_LOCAL];
+                int idxLocal;
+                do {
+                    printf("Novo local atual (nome): ");
+                    fgets(nomeLocal, MAX_NOME_LOCAL, stdin);
+                    nomeLocal[strcspn(nomeLocal, "\n")] = 0;
+                    if (strlen(nomeLocal) == 0) {
+                        printf("Nome do local nao pode ser vazio. Tente novamente.\n");
+                        continue;
+                    }
+                    idxLocal = buscarLocalPorNome(locais, nomeLocal);
+                    if (idxLocal == -1) {
+                        printf("Erro: Local nao encontrado. Tente novamente.\n");
+                        continue;
+                    }
+                    v.localAtual = idxLocal;
+                    break;
+                } while (1);
                 if (atualizarVeiculo(veiculos, placa, v))
-                    printf("veiculo atualizado!\n");
+                    printf("Veiculo atualizado!\n");
                 else
                     printf("Erro ao atualizar.\n");
             }
         } else if (opcao == 4) {
-            // Remove um veiculo pelo número da placa
             char placa[MAX_PLACA];
-            printf("Placa do veiculo a remover: ");
+            printf("\nPlaca do veiculo a remover: ");
             fgets(placa, MAX_PLACA, stdin);
             placa[strcspn(placa, "\n")] = 0;
             if (removerVeiculo(veiculos, placa))
-                printf("veiculo removido!\n");
+                printf("Veiculo removido!\n");
             else
-                printf("veiculo não encontrado.\n");
+                printf("Veiculo nao encontrado.\n");
         }
     } while(opcao != 0);
 }
@@ -179,7 +217,7 @@ int main() {
             }
             case 2:
                 // Submenu para CRUD de veiculos
-                submenuVeiculos(&veiculos);
+                submenuVeiculos(&veiculos, &locais);
                 break;
             case 3: {
                 // Submenu para CRUD de Pedidos
@@ -193,57 +231,127 @@ int main() {
                     printf("0. Voltar\n");
                     printf("Escolha uma opcao: ");
                     scanf("%d", &opPedido);
-                    getchar();
+                    limparBuffer();
                     if (opPedido == 1) {
-                        // Adiciona um novo pedido
                         Pedido p;
                         printf("ID do pedido: ");
                         scanf("%d", &p.id);
-                        printf("Indice do local de origem: ");
-                        scanf("%d", &p.origem);
-                        printf("Indice do local de destino: ");
-                        scanf("%d", &p.destino);
+                        limparBuffer();
+                        printf("Locais cadastrados:\n");
+                        listarLocais(&locais);
+                        char nomeOrigem[MAX_NOME_LOCAL];
+                        int idxOrigem;
+                        do {
+                            printf("Nome do local de origem: ");
+                            fgets(nomeOrigem, MAX_NOME_LOCAL, stdin);
+                            nomeOrigem[strcspn(nomeOrigem, "\n")] = 0;
+                            if (strlen(nomeOrigem) == 0) {
+                                printf("Nome do local nao pode ser vazio. Tente novamente.\n");
+                                continue;
+                            }
+                            idxOrigem = buscarLocalPorNome(&locais, nomeOrigem);
+                            if (idxOrigem == -1) {
+                                printf("Erro: Local de origem nao encontrado. Tente novamente.\n");
+                                continue;
+                            }
+                            p.origem = idxOrigem;
+                            break;
+                        } while (1);
+                        char nomeDestino[MAX_NOME_LOCAL];
+                        int idxDestino;
+                        do {
+                            printf("Nome do local de destino: ");
+                            fgets(nomeDestino, MAX_NOME_LOCAL, stdin);
+                            nomeDestino[strcspn(nomeDestino, "\n")] = 0;
+                            if (strlen(nomeDestino) == 0) {
+                                printf("Nome do local nao pode ser vazio. Tente novamente.\n");
+                                continue;
+                            }
+                            idxDestino = buscarLocalPorNome(&locais, nomeDestino);
+                            if (idxDestino == -1) {
+                                printf("Erro: Local de destino nao encontrado. Tente novamente.\n");
+                                continue;
+                            }
+                            p.destino = idxDestino;
+                            break;
+                        } while (1);
                         printf("Peso (kg): ");
                         scanf("%f", &p.peso);
+                        limparBuffer();
                         if (adicionarPedido(&pedidos, p))
                             printf("Pedido adicionado!\n");
                         else
                             printf("Pedido ja existe!\n");
                     } else if (opPedido == 2) {
-                        // Lista todos os pedidos
                         listarPedidos(&pedidos);
                     } else if (opPedido == 3) {
-                        // Atualiza um pedido existente
                         int id;
                         printf("ID do pedido a atualizar: ");
                         scanf("%d", &id);
+                        limparBuffer();
                         int idx = buscarPedidoPorId(&pedidos, id);
                         if (idx == -1) {
-                            printf("Pedido não encontrado!\n");
+                            printf("Pedido nao encontrado!\n");
                         } else {
                             Pedido novo;
                             printf("Novo ID: ");
                             scanf("%d", &novo.id);
-                            printf("Novo Indice de origem: ");
-                            scanf("%d", &novo.origem);
-                            printf("Novo Indice de destino: ");
-                            scanf("%d", &novo.destino);
+                            limparBuffer();
+                            printf("Locais cadastrados:\n");
+                            listarLocais(&locais);
+                            char nomeOrigem[MAX_NOME_LOCAL];
+                            int idxOrigem;
+                            do {
+                                printf("Novo nome do local de origem: ");
+                                fgets(nomeOrigem, MAX_NOME_LOCAL, stdin);
+                                nomeOrigem[strcspn(nomeOrigem, "\n")] = 0;
+                                if (strlen(nomeOrigem) == 0) {
+                                    printf("Nome do local nao pode ser vazio. Tente novamente.\n");
+                                    continue;
+                                }
+                                idxOrigem = buscarLocalPorNome(&locais, nomeOrigem);
+                                if (idxOrigem == -1) {
+                                    printf("Erro: Local de origem nao encontrado. Tente novamente.\n");
+                                    continue;
+                                }
+                                novo.origem = idxOrigem;
+                                break;
+                            } while (1);
+                            char nomeDestino[MAX_NOME_LOCAL];
+                            int idxDestino;
+                            do {
+                                printf("Novo nome do local de destino: ");
+                                fgets(nomeDestino, MAX_NOME_LOCAL, stdin);
+                                nomeDestino[strcspn(nomeDestino, "\n")] = 0;
+                                if (strlen(nomeDestino) == 0) {
+                                    printf("Nome do local nao pode ser vazio. Tente novamente.\n");
+                                    continue;
+                                }
+                                idxDestino = buscarLocalPorNome(&locais, nomeDestino);
+                                if (idxDestino == -1) {
+                                    printf("Erro: Local de destino nao encontrado. Tente novamente.\n");
+                                    continue;
+                                }
+                                novo.destino = idxDestino;
+                                break;
+                            } while (1);
                             printf("Novo peso (kg): ");
                             scanf("%f", &novo.peso);
+                            limparBuffer();
                             if (atualizarPedido(&pedidos, id, novo))
                                 printf("Pedido atualizado!\n");
                             else
                                 printf("Erro ao atualizar!\n");
                         }
                     } else if (opPedido == 4) {
-                        // Remove um pedido pelo id
                         int id;
                         printf("ID do pedido a remover: ");
                         scanf("%d", &id);
+                        limparBuffer();
                         if (removerPedido(&pedidos, id))
                             printf("Pedido removido!\n");
                         else
-                            printf("Pedido não encontrado!\n");
+                            printf("Pedido nao encontrado!\n");
                     }
                 } while(opPedido != 0);
                 break;
@@ -258,7 +366,12 @@ int main() {
                 printf("Digite o ID do pedido para calcular a rota: ");
                 int idPedido;
                 scanf("%d", &idPedido);
-                getchar();
+                limparBuffer();
+                int idxPedido = buscarPedidoPorId(&pedidos, idPedido);
+                if (idxPedido == -1) {
+                    printf("Pedido nao encontrado!\n");
+                    break;
+                }
                 exibirRotaEntrega(&veiculos, &locais, &pedidos, idPedido);
                 break;
             case 5:
